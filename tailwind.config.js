@@ -21,6 +21,7 @@ module.exports = {
       'pro': "url(./images/Group 13.png)",
       'checkboxActive': "url(./images/Group 7@1x.svg)",
       'checkboxNonActive': "url(./images/Rectangle@1x.svg)",
+      'confirmImg': "url(./images/Group 2@1x.svg)",
     }
     },
   },

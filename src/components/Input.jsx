@@ -11,9 +11,10 @@ function Input(props) {
     inputId,
     inputValue,
     placeholderInput,
-    // checked,
+    checked,
     onChange,
     // required
+    // ref
   } = props;
   
   return (
@@ -22,7 +23,7 @@ function Input(props) {
       <span className={spanClass}>{labelSpan}</span>
       <span className={spanYearlyClass}>{yearlySpan}</span>
       <input className={inputWrongClass}
-        // checked={checked}
+        checked={checked}
         onChange={onChange}
         type={typeInput}
         name={typeInput}
