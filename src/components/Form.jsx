@@ -248,7 +248,8 @@ function Form({
           />
         );
       });
-    } else if (isClicked === 1) {
+    }  
+    if (isClicked === 1) {
       return (
         <div className="flex-col">
           <div className="flex gap-[18px] mb-[32px]">
@@ -272,9 +273,11 @@ function Form({
           </div>
         </div>
       );
-    } else if (isClicked === 2) {
+    } 
+    if (isClicked === 2) {
       return <>{yearlyList ? monthlyOnsPage() : yearlyOnsPage()}</>;
-    } else if (isClicked === 3) {
+    }
+    if (isClicked === 3) {
       switch (secondPageValue) {
         case 9:
           finalResultValue.subscription = 'Arcade (Monthly)';
