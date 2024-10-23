@@ -1,6 +1,10 @@
 function Input(props) {
   const {
-    inputWrongClass,
+    inputEmpty,
+    inputEmptyClass,
+    inputNameWrongClass,
+    inputEmailWrongClass,
+    inputTelWrongClass,
     labelName,
     labelClass,
     labelSpan,
@@ -22,7 +26,8 @@ function Input(props) {
       {labelName}
       <span className={spanClass}>{labelSpan}</span>
       <span className={spanYearlyClass}>{yearlySpan}</span>
-      <input className={inputWrongClass}
+      <span className={inputEmptyClass}>{inputEmpty}</span>
+      <input className={inputNameWrongClass || inputEmailWrongClass || inputTelWrongClass}
         checked={checked}
         onChange={onChange}
         type={typeInput}

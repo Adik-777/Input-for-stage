@@ -14,66 +14,49 @@ import formData from './data/formData';
 function App() {
   const [isClicked, setClicked] = useState(0);
   const [stepClicked, setStepClicked] = useState('stepNumberActive');
-  const [inputError, setInputError] = useState('inputEmpty');
+  const [inputError, setInputError] = useState('border-[#EE374A]');
+  const [inputErrorText, setInputErrorText] = useState(
+    'text-[#EE374A] absolute end-0'
+  );
   const [backHandleClass, setBackHandleClass] = useState(goBackBtn.className);
   const [titleClass, setTitleClass] = useState();
 
   const nextHandleClick = () => {
-    formData.forEach((el) => {
-      if (el.typeInput === 'text') {
-        totalResultForm[0].name.length === 0
-          ? (el.inputWrongClass = 'inputEmpty')
-          : // ? (el.inputWrongClass = inputWrongClass)
-            setInputError('');
-        // setClicked(isClicked + 1);
-        setStepClicked('stepNumberActive');
-      }
-      if (el.typeInput === 'email') {
-        totalResultForm[0].email.length === 0
-          ? (el.inputWrongClass = 'inputEmpty')
-          : // ? (el.inputWrongClass = inputWrongClass)
-            setInputError('');
-        // setClicked(isClicked + 1);
-        setStepClicked('stepNumberActive');
-      }
-      if (el.typeInput === 'tel') {
-        totalResultForm[0].phoneNumber.length === 0
-          ? console.log(el.inputWrongClass)
-          : // ? (el.inputWrongClass = inputWrongClass)
-            setInputError('');
-        // setClicked(isClicked + 1);
-        setStepClicked('stepNumberActive');
-      } else {
-      }
-    });
-    // if (totalResultForm[0].name.length ||
-    //   totalResultForm[0].email.length  ||
-    //   totalResultForm[0].phoneNumber.length === 0) {
-    //   formData.forEach((el) => {
-    //    if (el.typeInput === 'text'){
-    //        el.inputWrongClass = inputError}
-    //    if (el.typeInput === 'email'){
-    //        el.inputWrongClass = inputError}
-    //    if (el.typeInput === 'tel'){
-    //        el.inputWrongClass = inputError}
-    //       else {setInputError('')}}
-    //   );
-    // }
+  
+
+    if (totalResultForm[0].name.length === 0) {
+      formData.map((el) => {
+        if (el.typeInput === 'text') {
+          el.inputNameWrongClass = inputError;
+          el.inputEmptyClass = inputErrorText;
+        } else {
+          setInputError();
+          setInputErrorText();
+        }
+      });
+    }
     if (totalResultForm[0].email.length === 0) {
-      formData.map((el) =>
-        el.typeInput === 'email'
-          ? (el.inputWrongClass = inputError)
-          : setInputError('')
-      );
+      formData.map((el) => {
+        if (el.typeInput === 'email') {
+          el.inputEmailWrongClass = inputError;
+          el.inputEmptyClass = inputErrorText;
+        } else {
+          setInputError();
+          setInputErrorText();
+        }
+      });
     }
     if (totalResultForm[0].phoneNumber.length === 0) {
-      formData.map((el) =>
-        el.typeInput === 'tel'
-          ? (el.inputWrongClass = inputError)
-          : setInputError('')
-      );
+      formData.map((el) => {
+        if (el.typeInput === 'tel') {
+          el.inputTelWrongClass = inputError;
+          el.inputEmptyClass = inputErrorText;
+        } else {
+          setInputError();
+          setInputErrorText();
+        }
+      });
     } else {
-      setInputError('');
       setClicked(isClicked + 1);
       setStepClicked('stepNumberActive');
     }
@@ -82,6 +65,15 @@ function App() {
   const backHandleClick = () => {
     setClicked(isClicked - 1);
     setStepClicked('stepNumberActive');
+    
+     formData.map((el) => {
+        // if (el.typeInput === 'text') {
+        // el.inputValue = totalResultForm[0].name}
+        if (el.typeInput === 'email') {
+        el.inputValue = totalResultForm[0].email}
+        if (el.typeInput === 'tel') {
+        el.inputValue = totalResultForm[0].phoneNumber}
+      })
   };
 
   const backHandleChangeClick = () => {
@@ -98,7 +90,7 @@ function App() {
       <Steps stepClicked={stepClicked} isClicked={isClicked} />
       <div className="flex-col">
         <div className={titleClass}>
-          <Title 
+          <Title
             title={titleAray[isClicked]}
             subTitle={subTitleAray[isClicked]}
           />
@@ -107,6 +99,7 @@ function App() {
           isClicked={isClicked}
           backHandleChangeClick={backHandleChangeClick}
           confirmPageHiddenClass={confirmPageHiddenClass}
+          backHandleClick={backHandleClick}
         />
       </div>
       <Button

@@ -18,7 +18,7 @@ function Form({
     e.preventDefault();
   };
 
-  const [name, setName] = useState('');
+  const [name, setName] = useState(JSON.parse(localStorage.getItem('name')) ||'');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [secondPageValue, setSecondPageValue] = useState(9);
@@ -39,6 +39,7 @@ function Form({
   );
   const [confirm, setConfirm] = useState(false);
   const [confirmBtnClass, setConfirmBtnClass] = useState(confirmBtn.className);
+  
   const finalResultValue = {};
   totalResultForm[0] = { name: name, email: email, phoneNumber: phone };
   totalResultForm[1] = { subscription: secondPageValue };
@@ -50,13 +51,14 @@ function Form({
 
   console.log(dataAddOns);
   console.log(finalResultValue);
+  console.log(totalResultForm);
 
   function checkedClick() {
     setyearlyList(!yearlyList);
     setOnlineService(0);
     setLargerStorage(0);
     setCustomizableProfile(0);
-    yearlyList ? setSecondPageValue(90) : setSecondPageValue(9)
+    yearlyList ? setSecondPageValue(90) : setSecondPageValue(9);
     const checkedDataAddOns = dataAddOns.map((item) =>
       item.checked ? { ...item, checked: !item.checked } : item
     );
@@ -227,10 +229,10 @@ function Form({
             labelClass={e.labelClass}
             labelName={e.labelName}
             typeInput={e.typeInput}
+            inputValue={e.inputValue}
             placeholderInput={e.placeholderInput}
             required
             key={e.placeholderInput}
-            // inputValue={}
             onChange={(event) => {
               if (e.labelName === 'Name') {
                 setName(event.target.value);
@@ -238,17 +240,45 @@ function Form({
                   'name',
                   JSON.stringify(event.target.value)
                 );
+                if (name === '') {
+                  formData.map((el) => {
+                    if (el.typeInput === 'text') {
+                      el.inputNameWrongClass = '';
+                      el.inputEmptyClass = 'hidden';
+                      }
+                  });
+                }
               } else if (e.labelName === 'Address') {
                 setEmail(event.target.value);
+                if (email === '') {
+                  formData.map((el) => {
+                    if (el.typeInput === 'email') {
+                      el.inputEmailWrongClass = '';
+                      el.inputEmptyClass = 'hidden';
+                    }
+                  });
+                }
               } else if (e.labelName === 'Phone Number') {
                 setPhone(event.target.value);
+                if (phone === '') {
+                  formData.map((el) => {
+                    if (el.typeInput === 'tel') {
+                      el.inputTelWrongClass = '';
+                      el.inputEmptyClass = 'hidden';
+                    }
+                  });
+                }
               }
             }}
-            inputWrongClass={e.inputWrongClass}
+            inputEmpty={e.inputEmpty}
+            inputEmptyClass={e.inputEmptyClass}
+            inputNameWrongClass={e.inputNameWrongClass}
+            inputEmailWrongClass={e.inputEmailWrongClass}
+            inputTelWrongClass={e.inputTelWrongClass}
           />
         );
       });
-    }  
+    }
     if (isClicked === 1) {
       return (
         <div className="flex-col">
@@ -273,7 +303,7 @@ function Form({
           </div>
         </div>
       );
-    } 
+    }
     if (isClicked === 2) {
       return <>{yearlyList ? monthlyOnsPage() : yearlyOnsPage()}</>;
     }

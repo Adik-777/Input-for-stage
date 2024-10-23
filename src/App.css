@@ -4,6 +4,13 @@
   margin: 0;
 }
 
+/* body {
+  display: flex;
+  justify-content: center;
+ max-width: 1440px;
+  height: 810px;
+} */
+
 .App {
   display: flex;
   gap: 100px;
@@ -27,10 +34,6 @@ input {
   margin-top: 8px;
   outline-style: none;
   cursor: pointer;
-}
-
-.inputEmpty {
-  border: 1px solid #EE374A;
 }
 
 input:focus {
@@ -58,6 +61,10 @@ input::placeholder {
 input[type="radio"] {
   position: absolute;
   opacity: 0;
+}
+
+input[type="checkbox"] {
+  display: none;
 }
 
 label:has(input[type="radio"]:checked) {
@@ -111,7 +118,7 @@ label:has(input[type="radio"]:checked) {
   font-weight: 700;
 }
 
-label:has(input[id="service"]:checked), 
+label:has(input[id="service"]:checked),
 label:has(input[id="storage"]:checked),
 label:has(input[id="profile"]:checked) {
   border: 1px solid #483EFF;
@@ -119,4 +126,3 @@ label:has(input[id="profile"]:checked) {
   background-image: url(./images/Group\ 7.svg);
   background-repeat: no-repeat;
 }
-
