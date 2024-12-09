@@ -7,20 +7,24 @@ import totalResultForm from '../data/totalResultForm';
 import Button from './Button';
 import changeBtn from '../data/changeBtn';
 import confirmBtn from '../data/confirmBtn';
+import inputEmptyClass from '../classCss/inputEmptyClass';
+import inputErrorBorder from '../classCss/inputErrorBorder';
 
 function Form({
   inputClasses,
   isClicked,
   backHandleChangeClick,
   confirmPageHiddenClass,
+  inputError,
+  inputErrorText,
+  inputRegTelClass,
+  inputRegEmailClass,
 }) {
   const onSubmit = (e) => {
     e.preventDefault();
   };
 
-  const [name, setName] = useState(JSON.parse(localStorage.getItem('name')) ||'');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
+  const [data, setData] = useState({ name: '', email: '', phone: '' });
   const [secondPageValue, setSecondPageValue] = useState(9);
   const [onlineService, setOnlineService] = useState(
     JSON.parse(localStorage.getItem('service')) || 0
@@ -39,9 +43,13 @@ function Form({
   );
   const [confirm, setConfirm] = useState(false);
   const [confirmBtnClass, setConfirmBtnClass] = useState(confirmBtn.className);
-  
+
   const finalResultValue = {};
-  totalResultForm[0] = { name: name, email: email, phoneNumber: phone };
+  totalResultForm[0] = {
+    name: data.name,
+    email: data.email,
+    phoneNumber: data.phone,
+  };
   totalResultForm[1] = { subscription: secondPageValue };
   totalResultForm[2] = {
     onlineService: onlineService,
@@ -49,8 +57,6 @@ function Form({
     customizableProfile: customizableProfile,
   };
 
-  console.log(dataAddOns);
-  console.log(finalResultValue);
   console.log(totalResultForm);
 
   function checkedClick() {
@@ -224,57 +230,94 @@ function Form({
   function pages(isClicked) {
     if (isClicked === 0) {
       return formData.map((e) => {
+        e.inputNameWrongClass =
+          totalResultForm[0].name.length > 0 ? '' : inputError;
+        e.inputEmailWrongClass =
+          totalResultForm[0].email.length > 0 ? '' : inputError;
+        e.inputTelWrongClass =
+          totalResultForm[0].phoneNumber.length > 0 ? '' : inputError;
+        e.inputNameEmptyClass =
+          totalResultForm[0].name.length > 0 ? 'hidden' : inputErrorText;
+        e.inputEmailEmptyClass =
+          totalResultForm[0].email.length > 0 ? 'hidden' : inputErrorText;
+        e.inputTelEmptyClass =
+          totalResultForm[0].phoneNumber.length > 0 ? 'hidden' : inputErrorText;
+         e.inputRegEmailClass =
+         totalResultForm[0].email.length > 0 ? inputRegEmailClass : 'hidden';
+          e.inputRegTelClass =
+          totalResultForm[0].phoneNumber.length > 0 ? inputRegTelClass : 'hidden';
         return (
           <Input
             labelClass={e.labelClass}
             labelName={e.labelName}
+            inputId={e.inputId}
             typeInput={e.typeInput}
-            inputValue={e.inputValue}
+            inputValue={
+              e.inputId === 'name'
+                ? data.name
+                : '' || e.inputId === 'email'
+                ? data.email
+                : '' || e.inputId === 'phone'
+                ? data.phone
+                : ''
+            }
             placeholderInput={e.placeholderInput}
-            required
+           inputRegEmail={e.inputRegEmail}
+           inputRegEmailClass={e.inputRegEmailClass}
+           inputRegTel={e.inputRegTel}
+           inputRegTelClass={e.inputRegTelClass}
             key={e.placeholderInput}
             onChange={(event) => {
-              if (e.labelName === 'Name') {
-                setName(event.target.value);
-                localStorage.setItem(
-                  'name',
-                  JSON.stringify(event.target.value)
-                );
-                if (name === '') {
-                  formData.map((el) => {
-                    if (el.typeInput === 'text') {
-                      el.inputNameWrongClass = '';
-                      el.inputEmptyClass = 'hidden';
-                      }
-                  });
-                }
-              } else if (e.labelName === 'Address') {
-                setEmail(event.target.value);
-                if (email === '') {
-                  formData.map((el) => {
-                    if (el.typeInput === 'email') {
-                      el.inputEmailWrongClass = '';
-                      el.inputEmptyClass = 'hidden';
-                    }
-                  });
-                }
-              } else if (e.labelName === 'Phone Number') {
-                setPhone(event.target.value);
-                if (phone === '') {
-                  formData.map((el) => {
-                    if (el.typeInput === 'tel') {
-                      el.inputTelWrongClass = '';
-                      el.inputEmptyClass = 'hidden';
-                    }
-                  });
-                }
+              if (e.inputId === 'name') {
+                setData({ ...data, name: event.target.value });
+                e.inputNameValue = event.target.value;
+                e.inputNameWrongClass =
+                  e.inputNameValue.length > 0 ? '' : inputErrorBorder;
+                e.inputNameEmptyClass =
+                  e.inputNameValue.length > 0
+                    ? 'hidden'
+                    : inputEmptyClass;
+              }
+              if (e.inputId === 'email') {
+                setData({ ...data, email: event.target.value });
+                e.inputEmailValue = event.target.value;
+                e.inputEmailWrongClass =
+                  e.inputEmailValue.length > 0 ? '' : inputErrorBorder;
+                e.inputEmailEmptyClass =
+                  e.inputEmailValue.length > 0
+                    ? 'hidden'
+                    : inputEmptyClass;
+              }
+              if (e.inputId === 'phone') {
+                setData({ ...data, phone: event.target.value });
+                e.inputPhoneValue = event.target.value;
+                e.inputTelWrongClass =
+                  e.inputPhoneValue.length > 0 ? '' : inputErrorBorder;
+                e.inputTelEmptyClass =
+                  e.inputPhoneValue.length > 0
+                    ? 'hidden'
+                    : inputEmptyClass;
               }
             }}
             inputEmpty={e.inputEmpty}
-            inputEmptyClass={e.inputEmptyClass}
-            inputNameWrongClass={e.inputNameWrongClass}
-            inputEmailWrongClass={e.inputEmailWrongClass}
-            inputTelWrongClass={e.inputTelWrongClass}
+            inputEmptyClass={
+              e.inputId === 'name'
+                ? e.inputNameEmptyClass
+                : '' || e.inputId === 'email'
+                ? e.inputEmailEmptyClass
+                : '' || e.inputId === 'phone'
+                ? e.inputTelEmptyClass
+                : ''
+            }
+            inputWrongClass={
+              e.inputId === 'name'
+                ? e.inputNameWrongClass
+                : '' || e.inputId === 'email'
+                ? e.inputEmailWrongClass
+                : '' || e.inputId === 'phone'
+                ? e.inputTelWrongClass
+                : ''
+            }
           />
         );
       });
@@ -308,6 +351,10 @@ function Form({
       return <>{yearlyList ? monthlyOnsPage() : yearlyOnsPage()}</>;
     }
     if (isClicked === 3) {
+        finalResultValue.name = data.name;
+        finalResultValue.email = data.email;
+        finalResultValue.phoneNumber = data.phone;
+
       switch (secondPageValue) {
         case 9:
           finalResultValue.subscription = 'Arcade (Monthly)';
@@ -457,6 +504,7 @@ function Form({
         setConfirm(true);
         setConfirmBtnClass('hidden');
         confirmPageHiddenClass();
+        alert(JSON.stringify(finalResultValue))
       };
 
       return (

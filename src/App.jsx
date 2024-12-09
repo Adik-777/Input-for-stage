@@ -10,70 +10,55 @@ import titleAray from './data/titleAray';
 import subTitleAray from './data/subTitleAray';
 import totalResultForm from './data/totalResultForm';
 import formData from './data/formData';
+import inputEmptyClass from './classCss/inputEmptyClass';
+import inputErrorBorder from './classCss/inputErrorBorder';
 
 function App() {
   const [isClicked, setClicked] = useState(0);
   const [stepClicked, setStepClicked] = useState('stepNumberActive');
-  const [inputError, setInputError] = useState('border-[#EE374A]');
-  const [inputErrorText, setInputErrorText] = useState(
-    'text-[#EE374A] absolute end-0'
-  );
+  const [inputError, setInputError] = useState();
+  const [inputErrorText, setInputErrorText] = useState('hidden');
+  const [inputRegTelClass, setInputRegTelClass] = useState('hidden');
+  const [inputRegEmailClass, setInputRegEmailClass] = useState('hidden');
   const [backHandleClass, setBackHandleClass] = useState(goBackBtn.className);
   const [titleClass, setTitleClass] = useState();
+  const regexPhoneNumbers = /[0-9]{3}-[0-9]{3}-[0-9]{4}/;
+  const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+  const validateInput = () => {
+      if (
+        !regexEmail.test(formData[1].inputEmailValue) ||
+        !regexPhoneNumbers.test(formData[2].inputPhoneValue)
+      ) {
+             
+      !regexEmail.test(formData[1].inputEmailValue) ? setInputRegEmailClass(inputEmptyClass) : setInputRegEmailClass('hidden');
+        
+      !regexPhoneNumbers.test(formData[2].inputPhoneValue) ? setInputRegTelClass(inputEmptyClass) : setInputRegTelClass('hidden');
+        
+      } else {
+        setClicked(isClicked + 1); 
+        setStepClicked('stepNumberActive');
+        setInputRegEmailClass('hidden');
+        setInputRegTelClass('hidden');
+      }
+  };
 
   const nextHandleClick = () => {
-  
-
-    if (totalResultForm[0].name.length === 0) {
-      formData.map((el) => {
-        if (el.typeInput === 'text') {
-          el.inputNameWrongClass = inputError;
-          el.inputEmptyClass = inputErrorText;
-        } else {
-          setInputError();
-          setInputErrorText();
-        }
-      });
-    }
-    if (totalResultForm[0].email.length === 0) {
-      formData.map((el) => {
-        if (el.typeInput === 'email') {
-          el.inputEmailWrongClass = inputError;
-          el.inputEmptyClass = inputErrorText;
-        } else {
-          setInputError();
-          setInputErrorText();
-        }
-      });
-    }
-    if (totalResultForm[0].phoneNumber.length === 0) {
-      formData.map((el) => {
-        if (el.typeInput === 'tel') {
-          el.inputTelWrongClass = inputError;
-          el.inputEmptyClass = inputErrorText;
-        } else {
-          setInputError();
-          setInputErrorText();
-        }
-      });
+    if (
+      totalResultForm[0].name.length === 0 ||
+      totalResultForm[0].email.length === 0 ||
+      totalResultForm[0].phoneNumber.length === 0
+    ) {
+      setInputError(inputErrorBorder);
+      setInputErrorText(inputEmptyClass);
     } else {
-      setClicked(isClicked + 1);
-      setStepClicked('stepNumberActive');
+      validateInput();
     }
   };
 
   const backHandleClick = () => {
     setClicked(isClicked - 1);
     setStepClicked('stepNumberActive');
-    
-     formData.map((el) => {
-        // if (el.typeInput === 'text') {
-        // el.inputValue = totalResultForm[0].name}
-        if (el.typeInput === 'email') {
-        el.inputValue = totalResultForm[0].email}
-        if (el.typeInput === 'tel') {
-        el.inputValue = totalResultForm[0].phoneNumber}
-      })
   };
 
   const backHandleChangeClick = () => {
@@ -100,6 +85,10 @@ function App() {
           backHandleChangeClick={backHandleChangeClick}
           confirmPageHiddenClass={confirmPageHiddenClass}
           backHandleClick={backHandleClick}
+          inputError={inputError}
+          inputErrorText={inputErrorText}
+          inputRegEmailClass={inputRegEmailClass}
+          inputRegTelClass={inputRegTelClass}
         />
       </div>
       <Button

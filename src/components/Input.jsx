@@ -1,10 +1,12 @@
 function Input(props) {
   const {
     inputEmpty,
+    inputRegEmail,
+    inputRegTel,
     inputEmptyClass,
-    inputNameWrongClass,
-    inputEmailWrongClass,
-    inputTelWrongClass,
+    inputWrongClass,
+    inputRegEmailClass,
+    inputRegTelClass,
     labelName,
     labelClass,
     labelSpan,
@@ -17,17 +19,18 @@ function Input(props) {
     placeholderInput,
     checked,
     onChange,
-    // required
-    // ref
   } = props;
-  
+
   return (
-  <label className={labelClass}>
+    <label className={labelClass}>
       {labelName}
       <span className={spanClass}>{labelSpan}</span>
       <span className={spanYearlyClass}>{yearlySpan}</span>
       <span className={inputEmptyClass}>{inputEmpty}</span>
-      <input className={inputNameWrongClass || inputEmailWrongClass || inputTelWrongClass}
+      <span className={inputRegEmailClass}>{inputRegEmail}</span>
+      <span className={inputRegTelClass}>{inputRegTel}</span>
+      <input
+        className={inputWrongClass}
         checked={checked}
         onChange={onChange}
         type={typeInput}
@@ -35,7 +38,6 @@ function Input(props) {
         id={inputId}
         value={inputValue}
         placeholder={placeholderInput}
-        // required={required}
       />
     </label>
   );
