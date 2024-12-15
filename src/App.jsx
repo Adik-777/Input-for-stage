@@ -22,7 +22,7 @@ function App() {
   const [inputRegEmailClass, setInputRegEmailClass] = useState('hidden');
   const [backHandleClass, setBackHandleClass] = useState(goBackBtn.className);
   const [titleClass, setTitleClass] = useState();
-  const regexPhoneNumbers = /[0-9]{3}-[0-9]{3}-[0-9]{4}/;
+  const regexPhoneNumbers =  /[+]{1}[0-9]{1} [0-9]{3} [0-9]{3} [0-9]{3}/;
   const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   const validateInput = () => {
